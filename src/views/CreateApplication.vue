@@ -133,6 +133,16 @@
             </td>
           </tr>
 
+          <tr>
+            <td>フォームのページ / Form page</td>
+            <td>
+              <router-link
+                :to="{ name: 'application_template', params: {template_id: selected_form.identity} }">
+                ここにクリック / Click here
+              </router-link>
+            </td>
+          </tr>
+
           <tr v-if="selected_form.properties.description">
             <td>フォーム説明 / Form description</td>
             <td>
@@ -144,16 +154,7 @@
             </td>
           </tr>
 
-          <tr>
-            <td>フォームのページ / Form page</td>
-            <td>
-              <router-link
-                :to="{ name: 'application_template', params: {template_id: selected_form.identity} }">
-                ここにクリック / Click here
-              </router-link>
-            </td>
 
-          </tr>
 
         </table>
       </template>
@@ -372,25 +373,12 @@ export default {
       this.$set(this.application_form_templates, 'loading', true)
       const url = `${process.env.VUE_APP_SHINSEI_MANAGER_URL}/application_form_templates/visible_to_user`
       this.axios.get(url)
-        .then(response => {
-          // delete templates to recreate them
-          this.application_form_templates = []
-          response.data.forEach(record => {
-            let template = record._fields[record._fieldLookup['aft']]
-            const author = record._fields[record._fieldLookup['creator']]
-            template.properties.fields = JSON.parse(template.properties.fields)
-
-            // a bit dirty
-            template.author = author
-
-            this.application_form_templates.push(template)
-          })
-        })
-        .catch(error => {
-          console.error(error)
-          this.$set(this.application_form_templates, 'error', 'Error loading templates')
-        })
-        .finally(() => this.$set(this.application_form_templates, 'loading', false))
+      .then( ({data}) => { this.application_form_templates = data })
+      .catch(error => {
+        console.error(error)
+        this.$set(this.application_form_templates, 'error', 'Error loading templates')
+      })
+      .finally(() => this.$set(this.application_form_templates, 'loading', false))
     },
 
     create_application () {
@@ -577,10 +565,6 @@ export default {
   cursor: not-allowed;
 }
 
-.form_title{
-  font-size: 150%;
-
-}
 
 .form_content_table {
   margin-top: 10px;
@@ -636,9 +620,6 @@ export default {
 
 }
 
-.link_to_template {
-  margin-top: 0.5em;
-}
 
 /* Application info table */
 table.application_info {
