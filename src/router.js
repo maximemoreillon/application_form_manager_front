@@ -31,8 +31,12 @@ export default new Router({
     {
       path: '/applications/:application_id',
       name: 'application',
-      // component: ShowApplication
       component: () => import('@/views/ShowApplication.vue')
+    },
+    {
+      path: '/applications/:application_id/v2',
+      name: 'application',
+      component: () => import('@/views/ShowApplication_v2_beta.vue')
     },
     {
       path: '/application_templates',
