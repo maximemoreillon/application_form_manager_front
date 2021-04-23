@@ -72,7 +72,7 @@ export default {
       application_templates: [],
       //shared_templates: [],
       loading: false,
-      error: false,
+      error: null,
     }
   },
   mounted () {
@@ -86,8 +86,8 @@ export default {
       const url = `${process.env.VUE_APP_SHINSEI_MANAGER_URL}/application_form_templates`
       this.axios.get(url)
       .then( ({data}) => { this.application_templates = data })
-      .catch(error => {
-        console.alert(error)
+      .catch( (error) => {
+        console.error(error)
         this.error = 'Error loading templates'
       })
       .finally(() => {this.loading = false})

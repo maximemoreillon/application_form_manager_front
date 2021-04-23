@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <h1>フォーム / Forms</h1>
+    <h1>フォームテンプレート / Form templates</h1>
 
     <!-- template is editable if new form of if current user is author -->
     <template v-if="is_editable">
